@@ -18,7 +18,7 @@ class Linear(Activation):
 		self.slope = slope
 
 	@property
-	def 	label(self):
+	def label(self):
 		return 'linear (%.1f)' % self.slope
 	
 	def function(self, x):
@@ -32,7 +32,7 @@ class Sigmoid(Activation):
 		self.alpha = alpha
 
 	@property
-	def 	label(self): 
+	def label(self): 
 		return 'sigmoid (%.1f)' % self.alpha
 	
 	def function(self, x):
@@ -44,7 +44,7 @@ class Sigmoid(Activation):
 
 class Tanh(Activation):
 	@property
-	def 	label(self): 
+	def label(self): 
 		return 'tanh'
 
 	def function(self, x):
@@ -59,7 +59,7 @@ class Tanh(Activation):
 
 class Relu(Activation):
 	@property
-	def 	label(self): 
+	def label(self): 
 		return 'relu'
 
 	def function(self, x):
@@ -71,7 +71,7 @@ class Relu(Activation):
 
 class Softplus(Activation):
 	@property
-	def 	label(self): 
+	def label(self): 
 		return 'softplus'
 
 	def function(self, x):
@@ -83,7 +83,7 @@ class Softplus(Activation):
 
 class Gaussian(Activation):
 	@property
-	def 	label(self): 
+	def label(self): 
 		return 'gaussian'
 
 	def function(self, x):
