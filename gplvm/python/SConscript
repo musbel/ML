@@ -1,0 +1,47 @@
+import os
+Import('env')
+env2 = env.Clone()
+#env2.Append(CCFLAGS=['-std=c++11'])
+
+# Find source files
+src = [
+	'Bindings.cpp'
+]
+
+if env2['PLATFORM'] == 'win32':
+	# TODO
+	Return()
+
+else:
+	# LINUX
+	includePaths = [
+		'/usr/include/python2.7',
+		'#c/ML/include',
+		'#c/Thirdparty/eigen3'
+	]
+
+	libPaths = [
+		'#bin/%s' % env['build']
+	]
+
+	env2.Append(LIBS=[
+		'm', 'boost_thread', 'boost_python', 'boost_chrono', 
+		'nlopt', 'ML'
+	])
+	env2.Append(CCFLAGS=['-c', '-w', '-msse4a'])
+
+	if env['build'] == 'release' and env2['PLATFORM'] != 'win32':
+		env2.Append(CCFLAGS=['-DNDEBUG', '-DEIGEN_NO_DEBUG'])
+
+	env2.Append(CPPPATH=includePaths)
+	env2.Append(LIBPATH=libPaths)
+
+	# Add a separate environment for the Python bindings as Windows wants a .pyd suffix
+	bindingsEnv = env2.Clone()
+
+	# Build shared Quad library with Python bindings
+	if env2['PLATFORM'] == 'win32': bindingsEnv['SHLIBSUFFIX'] = '.pyd'
+	else: bindingsEnv['SHLIBPREFIX'] = ''
+	outputs = bindingsEnv.SharedLibrary(target='ML', source=src)
+
+	Return('outputs')

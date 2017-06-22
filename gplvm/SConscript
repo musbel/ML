@@ -1,0 +1,46 @@
+import os
+Import('env')
+env2 = env.Clone()
+
+# Find source files
+src = [
+	'src/pca.cpp',
+	'src/RbfKernel.cpp',
+	'src/Normalisers.cpp',
+	'src/InitialiseModel.cpp',
+	'src/Optimisers.cpp',
+	'src/Constraints.cpp',
+	'src/TrainModel.cpp',
+	'src/ReconstructModel.cpp',
+	'src/Model.cpp',
+	'src/GPLVMImpl.cpp'	
+]
+
+if env2['PLATFORM'] == 'win32':
+	# TODO
+	Return()
+	
+else:
+	# LINUX
+	includePaths = [
+		'.',
+		'include',
+		'#/c/Thirdparty/eigen3'
+	]
+
+	libPaths = [
+	]
+
+	env2.Append(LIBS=['boost_thread', 'boost_chrono', 'boost_log', 'nlopt', 'm', 'alglib'])
+	env2.Append(CCFLAGS=['-c', '-w', '-msse4a'])
+
+	if env['build'] == 'release' and env2['PLATFORM'] != 'win32':
+		env2.Append(CCFLAGS=['-DNDEBUG', '-DEIGEN_NO_DEBUG'])
+
+	env2.Append(CPPPATH=includePaths)
+	env2.Append(LIBPATH=libPaths)
+
+	# Build library
+	outputs = env2.SharedLibrary(target='ML', source=src)
+
+	Return('outputs')
